@@ -36,6 +36,8 @@ class Sql(DBConnect):
         self.conn.commit()
         self.cur.execute("""DROP TABLE strike;""")
         self.conn.commit()
+        self.cur.execute("""DROP TABLE strikelocation;""")
+        self.conn.commit()
         self.cur.execute("""CREATE TABLE buffers(id serial, st_buffer geometry, pi integer);""")
         self.conn.commit()
         self.cur.execute("""CREATE TABLE ring(id serial, extring geometry, pi integer);""")
@@ -48,14 +50,14 @@ class Sql(DBConnect):
         self.conn.commit()
         # create inner and outer buffers
         # insert to database
-        self.cur.execute("""SELECT ST_Buffer(the_geom, 20200)
-                            FROM raspberrypi
-                            WHERE gid = 1""")
+        self.cur.execute("""SELECT ST_Buffer(the_geom, 30200)
+                            FROM pi
+                            WHERE pi = 1""")
         outer = self.cur.fetchone()
         self.conn.commit()
-        self.cur.execute("""SELECT ST_Buffer(the_geom, 19800)
-                            FROM raspberrypi
-                            WHERE gid = 1""")
+        self.cur.execute("""SELECT ST_Buffer(the_geom, 29800)
+                            FROM pi
+                            WHERE pi = 1""")
         inner = self.cur.fetchone()
         self.conn.commit()
         self.cur.execute("""INSERT INTO inside(inbuffer)
@@ -75,14 +77,14 @@ class Sql(DBConnect):
         self.conn.commit()
         # select other 2 buffers
         # insert into database
-        self.cur.execute("""SELECT ST_Buffer(the_geom, 38237)
-                            FROM raspberrypi
-                            WHERE gid = 2""")
+        self.cur.execute("""SELECT ST_Buffer(the_geom, 48237)
+                            FROM pi
+                            WHERE pi = 2""")
         y = self.cur.fetchone()
         self.conn.commit()
-        self.cur.execute("""SELECT ST_Buffer(the_geom, 20000)
-                            FROM raspberrypi
-                            WHERE gid = 3""")
+        self.cur.execute("""SELECT ST_Buffer(the_geom, 30000)
+                            FROM pi
+                            WHERE pi = 3""")
         z = self.cur.fetchone()
         self.conn.commit()
         self.cur.execute("""INSERT INTO buffers(st_buffer, pi)
